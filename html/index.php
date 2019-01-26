@@ -46,22 +46,17 @@
         <div class="container">
           <div class="two-thirds column">
             <ul class="navbar-list">
-              <li class="navbar-item"><a class="navbar-link" href="#">Alpha</a></li>
-              <li class="navbar-item"><a class="navbar-link" href="#">Beta</a></li>
-              <li class="navbar-item"><a class="navbar-link" href="#">Roger</a></li>
-              <li class="navbar-item"><a class="navbar-link" href="#">Wilco</a></li>
+              <li class="navbar-item"><a class="navbar-link" href="https://vis.rihaceks.com">Visualization</a></li>
+              <li class="navbar-item"><a class="navbar-link" href="#">Automation</a></li>
+              <li class="navbar-item"><a class="navbar-link" href="https://rihaceks.com">Home</a></li>
             </ul>
           </div>
           <div class="one-third column">
-        <!-- all icons licensed under Creative Commons Attribution 4.0 International: https://fontawesome.com/license -->		
-        <img src="images/github-brands.svg" height="35" style="padding: 10px;"/>
-        <img src="images/envelope-solid.svg" height="35" style="padding: 10px;"/>
-        <img src="images/discord-brands.svg" height="35" style="padding: 10px;"/>
-        
-      </div>  
-
+            <a href="https://github.com/rihacek"><img src="images/github-brands.svg" height="35" style="padding: 10px;"/></a>
+            <a href="https://www.linkedin.com/in/jrihacek"><img src="images/linkedin-brands.svg" height="35" style="padding: 10px;"/></a>
+          </div>  
         </div>
-      </nav>
+    </nav>
 
 
 	<div class="row">
