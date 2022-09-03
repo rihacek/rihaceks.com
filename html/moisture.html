@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <title>JR</title>
+    <meta name="description" content="John Rihacek's home page.">
+    <meta name="author" content="John Rihacek">
+
+    <!-- FONT
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+
+    <!-- CSS
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/skeleton.css">
+    <link rel="stylesheet" href="css/custom.css">
+
+    <!-- Favicon
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+    <!-- Scripts
+    --------------------------------------------------- -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="js/site.js"></script>
+
+</head>
+<body>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div class="container">
+
+    <nav class="navbar">
+        <div class="container">
+          <div class="two-thirds column">
+            <ul class="navbar-list">
+              <li class="navbar-item"><a class="navbar-link" href="https://www.rihaceks.com">Visualization</a></li>
+              <li class="navbar-item"><a class="navbar-link" href="#">Automation</a></li>
+              <li class="navbar-item"><a class="navbar-link" href="https://rihaceks.com">Home</a></li>
+            </ul>
+          </div>
+          <div class="one-third column">
+            <a href="https://github.com/rihacek"><img src="images/github-brands.svg" height="35" style="padding: 10px;"/></a>
+            <a href="https://www.linkedin.com/in/jrihacek"><img src="images/linkedin-brands.svg" height="35" style="padding: 10px;"/></a>
+          </div>  
+        </div>
+    </nav>
+
+
+	<div class="row">
+		<div class="one.column" style="margin-top: 5%">
+		<p>
+            write about the moisture sensors
+
+##### problem statement and solution
+##### overall landscape
+
+I've been wanting to do a small writeup about this arduino project, so here we go. I killed some of my houseplants by over-watering them and then killed more through under-watering. This isn't rocket science, but I thought it would be fun to build out some sensors and automation to help.
+
+Here's what I'm working with:
+* diagram: components, wifi, home assistant, mysql
+Each sensor consists of a D1 Mini/ESP8266(https://cdn-shop.adafruit.com/product-files/2471/0A-ESP8266__Datasheet__EN_v4.3.pdf) and resistive moisture sensor (https://www.waveshare.com/moisture-sensor.htm) powered by a usb cable/wall plug. These log on wifi and talk to HomeAssistant (https://www.home-assistant.io/) where they report their sensor state. HomeAssistant stores the states to MySQL database. As a note, I wouldn't have integrated into HomeAssistant if I wasn't using it for so much other automation already. It introduces another layer of abstraction and complexity, but it's also really nice to have all of our home automation states visible within the application. 
+
+
+link to the repo
+code walkthrough
+
+This is all loaded onto the <arduino chip>, and you'll find it's pretty simple if you step through it. The PubSubClient helps to publish MQTT messages to the broker, and I'm using the ArduinoJson library to format those messages. 
+
+There's not a lot going on in setup() besides getting the wifi running and setting configuration for the MQTT broker. The loop is neat, though: every hour, I read the moisture sensor's value 100 times then take the average of those and publish it to the MQTT broker. This ensures a less noisy value than if I was just posting the first read each time. publishData() takes that float value, adds it as a value on a JSON element named "moisture", and then publishes it to HomeAssistant. HA listens on a topic specific to this physical sensor kit. If you're looking at the code and it still contains all of the `Serial.` lines, I was just using that during debugging and never cleaned it up. That's it though: wait an hour, publish a reading. REPEAT. FOREVER.
+
+
+hardware wireup
+* link to https://hackster.imgix.net/uploads/attachments/849609/soil-moisture-tutorial-fritzing_aQgyXkStfJ.jpg?auto=compress%2Cformat&w=680&h=510&fit=max
+waterproofing case
+* blender screenshot
+Wiring ended up being very simple. 5v on the arduino connects to power on the sensor. Ground to ground. Then a third connection is made on one of the analog pins. To keep these safe in a wet setting, I edited some housing STLs and tried to create a waterproof enclosure for the sensor. It looks good so far, but I wont be surprised if I need to iterate on the design. Fortunately, the components are only a few dollars each, and I can sacrifice a couple if it gets me closer to the set-it-and-forget-it solution that I'm aiming for. 
+
+homeassistant intsys
+mysql intsys
+* graphing screenshot
+Obviously, the insights gained from data like this are limited, and you can buy solutions that are much easier to set up and run.`1r45 I just enjoy modelling and integrating  Water schedules and alerting are neat, but it's really just a fun project. 
+
+next steps/backlog
+better scaling: single arduino to many sensors
+grafana for this + other home visualization
+        </p>
+
+
+		</div>
+	</div>
+
+  </div>
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>
